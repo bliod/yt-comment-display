@@ -10,8 +10,6 @@ export default ({ app }: { app: express.Application }) => {
     res.status(200).end();
   });
 
-  app.enable('trust proxy');
-
   app.use(cors());
 
   app.use(express.json());
