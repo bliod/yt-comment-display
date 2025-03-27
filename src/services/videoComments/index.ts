@@ -11,7 +11,7 @@ export const fetchVideoComments = async (
   videoId: string,
 ): Promise<ICommentThreadsListResponse> => {
   const FIELDS = 'items';
-  const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&items=${FIELDS}&maxResults=100&videoId=${videoId}&key=${config.youtubeApi}`;
+  const url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&items=${FIELDS}&maxResults=20&videoId=${videoId}&key=${config.youtubeApi}`;
 
   const response = await axios.get(url);
   return response.data;
@@ -26,10 +26,18 @@ export const getVideoComments = async (videoId: string) => {
 
 export const updateVideoComments = async (
   videoId: string,
-  comments: ICommentThreadsListResponse,
+  commentThread: ICommentThreadsListResponse,
 ) => {
-  const buildDocument = { timestamp: new Date(), videoId, comments };
-
-  const result = await db.collection('videoComments').insertOne(buildDocument);
+  const result = await db.collection('videoComments').updateOne(
+    { videoId },
+    {
+      $set: {
+        videoId,
+        commentThread,
+        timestamp: new Date(),
+      },
+    },
+    { upsert: true },
+  );
   return result;
 };

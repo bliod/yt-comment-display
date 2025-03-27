@@ -10,13 +10,18 @@ export default (app: Router) => {
     try {
       const { id } = req.params;
       const commentsFromDb = await videoCommentsService.getVideoComments(id);
-
-      if (isTimestampWithin24Hours(commentsFromDb.timestamp)) {
-        return res.json({ comments: commentsFromDb }).status(200);
+      console.info('!!!!!', id);
+      if (
+        commentsFromDb &&
+        isTimestampWithin24Hours(commentsFromDb.timestamp)
+      ) {
+        return res.json({ ...commentsFromDb, isFromDb: true }).status(200);
       }
       const comments = await videoCommentsService.fetchVideoComments(id);
       await videoCommentsService.updateVideoComments(id, comments);
-      return res.json({ comments }).status(200);
+      const commentsFromDbNew = await videoCommentsService.getVideoComments(id);
+
+      return res.json({ ...commentsFromDbNew, isFromDb: false }).status(200);
     } catch (error) {
       console.error(error);
       return next(error);
