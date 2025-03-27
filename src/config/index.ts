@@ -13,6 +13,7 @@ if (envFound.error) {
 export default {
   port: process.env.PORT || 8080,
   databaseURL: process.env.MONGODB_URI,
+  youtubeApi: process.env.YOUTUBE_API,
   api: {
     prefix: '/api',
   },
