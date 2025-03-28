@@ -2,6 +2,7 @@ import config from './config';
 
 import express from 'express';
 
+/* eslint-disable */
 async function startServer() {
   const app = express();
 

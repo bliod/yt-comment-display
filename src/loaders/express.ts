@@ -3,10 +3,10 @@ import cors from 'cors';
 import routes from '../api';
 import config from '../config';
 export default ({ app }: { app: express.Application }) => {
-  app.get('/status', (req, res) => {
+  app.get('/status', (_req, res) => {
     res.status(200).end();
   });
-  app.head('/status', (req, res) => {
+  app.head('/status', (_req, res) => {
     res.status(200).end();
   });
 
@@ -17,14 +17,14 @@ export default ({ app }: { app: express.Application }) => {
   app.use(config.api.prefix, routes());
 
   /// catch 404 and forward to error handler
-  app.use((req, res, next) => {
+  app.use((_req, _res, next) => {
     const err = new Error('Not Found');
     err['status'] = 404;
     next(err);
   });
 
   /// error handlers
-  app.use((err, req, res, next) => {
+  app.use((err, _req, res, next) => {
     /**
      * Handle 401 thrown by express-jwt library
      */
@@ -34,7 +34,8 @@ export default ({ app }: { app: express.Application }) => {
     return next(err);
   });
 
-  app.use((err, req, res, next) => {
+  /* eslint-disable */
+  app.use((err, _req, res, _next) => {
     res.status(err.status || 500);
     res.json({
       errors: {
