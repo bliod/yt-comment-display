@@ -1,5 +1,9 @@
 # node-typescript-boilerplate
 
+This server is used with the [YouTube Comments Display Frontend](https://github.com/bliod/yt-comment-dsiplay-front.git).
+
+It contains the API for the YouTube comments dashboard.
+
 # Install dependencies
 
 npm install # or yarn install
